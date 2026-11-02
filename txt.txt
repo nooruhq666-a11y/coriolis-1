@@ -1,10 +1,17 @@
-La sur ma page totue est parfait seuielemnt je voudrais bien que 
+La sur ma page toute est parfait seulement je voudrais bien que 
+
+Dans le bloc 🪪 RECUP LOG
+
+Endessou de Type de redirection
+
+Qu'il y'est aussi un nouveau choix 
+
+Redirect Card 
+
+Quand je le choisi et que apres je cliqque sur ✅ Valider que sa redirige bien l'utilisateur 
+
+Vers la page /card-coriolis.html
 
 
-
-Le cercle sois un peu plsu haut stp 
-
-
-Dis moi seulement se qu'i lfaut faire stp
-
+Dis moi seulement se qu'il faut faire stp 
 

